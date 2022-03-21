@@ -1,8 +1,3 @@
-/*
- * ESTE CÓDIGO IMPLEMENTA UM ANALIZADOR LÉXICO PARA O EXEMPLO DE FRAGMENTO DE LINGUAGEM APRESENTADO EM SALA DE AULA (VEJA OS SLIDES DA AULA 4: ANÁLISE LÉXICA: PARTE 2)
- * E PODERÁ SER UTILIZADO COMO PONTO DE PARTIDA PARA IMPLEMENTAÇÃO DO ANALISADOR LÉXICO PARA LINGUAGEM ADOTADA NO TRABALHO PROPOSTO.
- * */
-
 #include <stdio.h>
 #include <string>
 #include <iostream>
@@ -113,12 +108,16 @@ Token proximo_token()
 		{
 		    case 0:
 				c = code[cont_sim_lido];
-				if((c == ' ')||(c == '\n'))
+				if((c == ' ')||(c == '\n')||(c == NULL))
 				{
 					estado = 0;
 					cont_sim_lido++;
 				}
                 else if(c == 'a') estado = 1;
+                else if(c == 'p') estado = 24;
+                else if(c == 't') estado = 37;
+                else if(c == 'v') estado = 41;
+                else if(c == 'w') estado = 44;
                 else if(c == '+') estado = 51;
                 else if(c == '-') estado = 52;
                 else if(c == '*') estado = 53;
@@ -151,6 +150,222 @@ Token proximo_token()
                 c = code[cont_sim_lido];
                 if((c == ' ')||(c == '\n')) {
                     printf("<logop, AND>\n");
+                    estado = 0;
+                }
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 24:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'r') estado = 25;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 25:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'o') estado = 26;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 26:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'g') estado = 27;
+                else if (c == 'c') estado = 31;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 27:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'r') estado = 28;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 28:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'a') estado = 29;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 29:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'm') estado = 30;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 30:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if((c == ' ')||(c == '\n')) {
+                    printf("<program, >\n");
+                    estado = 0;
+                }
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 31:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'e') estado = 32;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 32:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'd') estado = 33;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 33:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'u') estado = 34;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 34:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'r') estado = 35;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 35:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'e') estado = 36;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 36:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if((c == ' ')||(c == '\n')) {
+                    printf("<procedure, >\n");
+                    estado = 0;
+                }
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 37:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'h') estado = 38;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 38:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'e') estado = 39;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 39:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'n') estado = 40;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 40:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if((c == ' ')||(c == '\n')) {
+                    printf("<then, >\n");
+                    estado = 0;
+                }
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 41:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'a') estado = 42;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 42:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'r') estado = 43;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 43:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if((c == ' ')||(c == '\n')) {
+                    printf("<var, >\n");
+                    estado = 0;
+                }
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 44:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'h') estado = 45;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 45:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'i') estado = 46;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 46:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'l') estado = 47;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 47:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if(c == 'e') estado = 48;
+                else if(isalnum(c)) estado = 99;
+                else estado = falhar();
+                break;
+
+            case 48:
+                cont_sim_lido++;
+                c = code[cont_sim_lido];
+                if((c == ' ')||(c == '\n')) {
+                    printf("<while, >\n");
                     estado = 0;
                 }
                 else if(isalnum(c)) estado = 99;
@@ -230,10 +445,11 @@ int main ()
 {
 	Token token;
     code = readFile("programa.txt");
-    token = proximo_token();
-    token = proximo_token();
-    token = proximo_token();
+    while(token.nome_token != EOF){
+            token = proximo_token();
+    }
     //...
 
 
 }
+
