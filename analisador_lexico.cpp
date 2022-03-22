@@ -4,6 +4,8 @@
 #include <vector>
 #include <algorithm>
 #include <regex>
+#include <fstream>
+#include <streambuf>
 
 using namespace std;
 
@@ -50,10 +52,10 @@ struct Token {
 int estado = 0;
 int partida = 0;
 int cont_simb_lido = 0;
-char* code;
-string temp_id;
-string temp_num;
 vector<string> tabela_simb;
+
+ifstream file("programa.txt");
+string code((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
 
 char* readFile(char* fileName)
 {
@@ -80,32 +82,7 @@ char* readFile(char* fileName)
 
 int falhar()
 {
-    switch (estado) {
-    case 0:
-        partida = 9;
-        break;
-
-    case 9:
-        partida = 12;
-        break;
-
-    case 12:
-        partida = 20;
-        break;
-
-    case 20:
-        partida = 25;
-        break;
-
-    case 25:
-        //retornar msg de erro
-        printf("Erro encontrado no código\n");
-        break;
-
-    default:
-        printf("Erro do compilador");
-    }
-    return (partida);
+    return 404;
 }
 
 bool isspecialsymbol(char c)
@@ -139,6 +116,9 @@ Token proximo_token()
 {
     Token token;
     char c;
+    string temp_id;
+    string temp_num;
+
     while (code[cont_simb_lido] != EOF) {
         switch (estado) {
         case 0:
@@ -150,9 +130,9 @@ Token proximo_token()
             temp_num.clear();
             temp_num.push_back(c);
 
-            if (iswhitespace(c)) {
+            if (iswhitespace(c))
                 estado = 0;
-            } else if (c == 'a')
+            else if (c == 'a')
                 estado = 1;
             else if (c == 'p')
                 estado = 24;
@@ -170,10 +150,8 @@ Token proximo_token()
                 estado = 53;
             else if (c == '<')
                 estado = 54;
-            else {
-                printf("chama falha");
+            else
                 estado = falhar();
-            }
             break;
 
         case 1:
@@ -551,28 +529,33 @@ Token proximo_token()
             return (token);
             break;
 
-        case 99:
+        case 99: {
             c = code[cont_simb_lido];
 
             while (isalphanum(c)) {
-                cont_simb_lido++;
                 temp_id += c;
-                c = code[cont_simb_lido];
+                c = code[++cont_simb_lido];
             }
 
             vector<string>::iterator it = find(tabela_simb.begin(), tabela_simb.end(), temp_id);
             int indice_id = distance(tabela_simb.begin(), it);
-            bool achou_id = it != tabela_simb.end(); 
+            bool achou_id = (it != tabela_simb.end()); 
 
-            if(!achou_id) {
+            if(!achou_id)
                 tabela_simb.push_back(temp_id);
-                indice_id++;
-            }
 
             printf("<id, %d>\n", indice_id);
             token.nome_token = ID;
             token.atributo = indice_id;
             estado = 0;
+            }
+            return (token);
+            break;
+
+        case 404:
+            printf("Erro de compilacao");
+            token.nome_token = EOF;
+            token.atributo = -1;
             return (token);
             break;
         }
@@ -585,10 +568,10 @@ Token proximo_token()
 int main()
 {
     Token token;
-    code = readFile((char*)"programa.txt");
 
+    //for(int t=0; t<50; t++) {
     while (token.nome_token != EOF) {
         token = proximo_token();
     }
-    //...
+
 }
