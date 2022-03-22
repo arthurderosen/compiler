@@ -131,6 +131,8 @@ Token proximo_token()
                 estado = 41;
             else if (c == 'w')
                 estado = 44;
+            else if(isdigit(c))
+                estado = 50;
             else if (c == '+')
                 estado = 51;
             else if (c == '-')
@@ -161,6 +163,10 @@ Token proximo_token()
                 estado = 68;
             else if(c == '}' )
                 estado = 69;
+            else if(c == '/' )
+                estado = 70;
+            else if(c == '.' )
+                estado = 72;
             else
                 estado = falhar();
             break;
@@ -733,6 +739,20 @@ Token proximo_token()
                 estado = falhar();
             break;
 
+          case 50:
+             c = code[cont_simb_lido];
+             while (isdigit(c)) {
+                temp_num += c;
+                c = code[++cont_simb_lido];
+             }
+            printf("<num, %s>\n",temp_num.c_str());
+            token.nome_token = NUM;
+            token.atributo = atoi(temp_num.c_str());
+            estado = 0;
+            return (token);
+            break;
+              
+
         case 51:
             printf("<ariop, PLUS>\n");
             token.nome_token = ARIOP;
@@ -813,7 +833,7 @@ Token proximo_token()
             case 59:
                 printf("<relop, EQ>\n");
                 token.nome_token = RELOP;
-				        token.atributo = EQ;
+				token.atributo = EQ;
                 estado = 0;
                 return(token);
                 break;
@@ -821,7 +841,7 @@ Token proximo_token()
             case 60:
                 printf("<, >\n");
                 token.nome_token = 44;
-				        token.atributo = -1;
+				token.atributo = -1;
                 estado = 0;
                 return(token);
                 break;
@@ -829,7 +849,7 @@ Token proximo_token()
             case 61:
                 printf("<;, >\n");
                 token.nome_token = 59;
-				        token.atributo = -1;
+				token.atributo = -1;
                 estado = 0;
                 return(token);
                 break;
@@ -892,6 +912,36 @@ Token proximo_token()
             case 69:
                 printf("<}, >\n");
                 token.nome_token = 125;
+				token.atributo = -1;
+                estado = 0;
+                return(token);
+                break;
+
+            case 70:
+                c = code[cont_simb_lido];
+                cont_simb_lido++;
+                if(c == '/') estado = 71;
+                else estado = falhar();
+                break;
+
+            case 71:
+                printf("<//, >\n");
+                token.nome_token = 47;
+				token.atributo = -1;
+                estado = 0;
+                return(token);
+                break;
+
+            case 72:
+                c = code[cont_simb_lido];
+                cont_simb_lido++;
+                if(!isallowedsymbol(c)) estado = 73;
+                else estado = falhar();
+                break;
+          
+            case 73:
+                printf("<., >\n");
+                token.nome_token = 46;
 				token.atributo = -1;
                 estado = 0;
                 return(token);
