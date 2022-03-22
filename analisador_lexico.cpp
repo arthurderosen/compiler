@@ -149,6 +149,18 @@ Token proximo_token()
                 estado = 61;
             else if(c == ':')
                 estado = 62;
+            else if(c == '(' )
+                estado = 64;
+            else if(c == ')' )
+                estado = 65;
+            else if(c == '[' )
+                estado = 66;
+            else if(c == ']' )
+                estado = 67;
+            else if(c == '{' )
+                estado = 68;
+            else if(c == '}' )
+                estado = 69;
             else
                 estado = falhar();
             break;
@@ -801,7 +813,7 @@ Token proximo_token()
             case 59:
                 printf("<relop, EQ>\n");
                 token.nome_token = RELOP;
-				token.atributo = EQ;
+				        token.atributo = EQ;
                 estado = 0;
                 return(token);
                 break;
@@ -809,7 +821,7 @@ Token proximo_token()
             case 60:
                 printf("<, >\n");
                 token.nome_token = 44;
-				token.atributo = -1;
+				        token.atributo = -1;
                 estado = 0;
                 return(token);
                 break;
@@ -817,7 +829,7 @@ Token proximo_token()
             case 61:
                 printf("<;, >\n");
                 token.nome_token = 59;
-				token.atributo = -1;
+				        token.atributo = -1;
                 estado = 0;
                 return(token);
                 break;
@@ -833,6 +845,54 @@ Token proximo_token()
                 printf("<:=, >\n");
                 token.nome_token = 99;
                 token.atributo = -1;
+                estado = 0;
+                return(token);
+                break;
+
+            case 64:
+                printf("<(, >\n");
+                token.nome_token = 40;
+				token.atributo = -1;
+                estado = 0;
+                return(token);
+                break;
+
+            case 65:
+                printf("<), >\n");
+                token.nome_token = 41;
+				token.atributo = -1;
+                estado = 0;
+                return(token);
+                break;
+
+            case 66:
+                printf("<[, >\n");
+                token.nome_token = 91;
+				token.atributo = -1;
+                estado = 0;
+                return(token);
+                break;
+
+            case 67:
+                printf("<], >\n");
+                token.nome_token = 93;
+				token.atributo = -1;
+                estado = 0;
+                return(token);
+                break;
+
+            case 68:
+                printf("<{, >\n");
+                token.nome_token = 123;
+				token.atributo = -1;
+                estado = 0;
+                return(token);
+                break;
+
+            case 69:
+                printf("<}, >\n");
+                token.nome_token = 125;
+				token.atributo = -1;
                 estado = 0;
                 return(token);
                 break;
