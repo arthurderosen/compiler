@@ -57,11 +57,6 @@ vector<string> tabela_simb;
 ifstream file("programa.txt");
 string code((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
 
-int falhar()
-{
-    return 404;
-}
-
 bool isspecialsymbol(char c)
 {
     string cstring(1,c);
@@ -69,24 +64,25 @@ bool isspecialsymbol(char c)
     return regex_match(cstring, re);
 }
 
-bool iswhitespace(char c)
-{
-    return (c == ' ') || (c == '\n') || (c == '\t');
+bool iswhitespace(char c) { return (c == ' ') || (c == '\n') || (c == '\t'); }
+
+bool isalphabetic(char c) { return (c == '_') || isalpha(c); }
+
+bool isalphanum(char c) { return (c == '_') || isalnum(c); }
+
+bool isallowedsymbol(char c) { return isalphanum(c) || iswhitespace(c) || isspecialsymbol(c); }
+
+bool isresto(char c) {
+    string cstring(1,c);
+    regex re(R"([abdeinoptvw])");
+
+    return isalphabetic(c) && !regex_match(cstring, re);
 }
 
-bool isalphabetic(char c)
-{
-    return (c == '_') || isalpha(c);
-}
 
-bool isalphanum(char c)
+int falhar()
 {
-    return (c == '_') || isalnum(c);
-}
-
-bool isallowedsymbol(char c)
-{
-    return isalphanum(c) || iswhitespace(c) || isspecialsymbol(c);
+    return 404;
 }
 
 Token proximo_token()
@@ -131,6 +127,8 @@ Token proximo_token()
                 estado = 41;
             else if (c == 'w')
                 estado = 44;
+            else if (isresto(c))
+                estado = 49;
             else if (c == '+')
                 estado = 51;
             else if (c == '-')
@@ -732,6 +730,12 @@ Token proximo_token()
             else
                 estado = falhar();
             break;
+        
+        case 49:
+            //estado redundante
+            //porem necessario para controle
+            estado = 99;
+            break;
 
         case 51:
             printf("<ariop, PLUS>\n");
@@ -897,27 +901,26 @@ Token proximo_token()
                 return(token);
                 break;
 
-        case 99: {
+        case 99:
             c = code[cont_simb_lido];
 
-            while (isalphanum(c)) {
+            if (isalphanum(c)) {
+                cont_simb_lido++;
                 temp_id += c;
-                c = code[++cont_simb_lido];
+                estado = 99;
+            } else {
+                vector<string>::iterator it = find(tabela_simb.begin(), tabela_simb.end(), temp_id);
+                int indice_id = distance(tabela_simb.begin(), it);
+
+                bool achou_id = (it != tabela_simb.end());
+                if(!achou_id) tabela_simb.push_back(temp_id);
+
+                printf("<id, %d>\n", indice_id+1);
+                token.nome_token = ID;
+                token.atributo = indice_id;
+                estado = 0;
+                return (token);
             }
-
-            vector<string>::iterator it = find(tabela_simb.begin(), tabela_simb.end(), temp_id);
-            int indice_id = distance(tabela_simb.begin(), it);
-            bool achou_id = (it != tabela_simb.end());
-
-            if(!achou_id)
-                tabela_simb.push_back(temp_id);
-
-            printf("<id, %d>\n", indice_id);
-            token.nome_token = ID;
-            token.atributo = indice_id;
-            estado = 0;
-            }
-            return (token);
             break;
 
         case 404:
