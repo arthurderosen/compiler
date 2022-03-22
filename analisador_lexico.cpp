@@ -57,28 +57,6 @@ vector<string> tabela_simb;
 ifstream file("programa.txt");
 string code((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
 
-char* readFile(char* fileName)
-{
-    FILE* file = fopen(fileName, "r");
-    char* code;
-    int n = 0;
-    int c;
-
-    if (file == NULL)
-        return NULL;
-
-    fseek(file, 0, SEEK_END);
-    long f_size = ftell(file);
-    fseek(file, 0, SEEK_SET);
-
-    code = new char(f_size);
-
-    while ((c = fgetc(file)) != EOF) {
-        code[n++] = (char)c;
-    }
-    code[n] = '\0';
-    return code;
-}
 
 int falhar()
 {
@@ -134,6 +112,18 @@ Token proximo_token()
                 estado = 0;
             else if (c == 'a')
                 estado = 1;
+            else if (c == 'b')
+                estado = 4;
+            else if (c == 'd')
+                estado = 9;
+            else if (c == 'e')
+                estado = 11;
+            else if (c == 'i')
+                estado = 17;
+            else if (c == 'n')
+                estado = 19;
+            else if (c == 'o')
+                estado = 22;
             else if (c == 'p')
                 estado = 24;
             else if (c == 't')
@@ -150,6 +140,16 @@ Token proximo_token()
                 estado = 53;
             else if (c == '<')
                 estado = 54;
+            else if(c == '>')
+                estado = 57;
+            else if(c == '=')
+                estado = 59;
+            else if(c == ',')
+                estado = 60;
+            else if(c == ';')
+                estado = 61;
+            else if(c == ':')
+                estado = 62;
             else
                 estado = falhar();
             break;
@@ -184,6 +184,255 @@ Token proximo_token()
             temp_id += c;
             if (iswhitespace(c)) {
                 printf("<logop, AND>\n");
+                estado = 0;
+            } else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 4:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (c == 'e')
+                estado = 5;
+            else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 5:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (c == 'g')
+                estado = 6;
+            else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 6:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (c == 'i')
+                estado = 7;
+            else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 7:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (c == 'n')
+                estado = 8;
+            else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 8:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (iswhitespace(c)) {
+                printf("<begin, >\n");
+                estado = 0;
+            } else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 9:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (c == 'o')
+                estado = 10;
+            else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 10:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (iswhitespace(c)) {
+                printf("<do, >\n");
+                estado = 0;
+            } else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 11:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (c == 'n')
+                estado = 12;
+            else if (c == 'l')
+                estado = 14;
+            else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 12:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (c == 'd')
+                estado = 13;
+            else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 13:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (iswhitespace(c)) {
+                printf("<end, >\n");
+                estado = 0;
+            } else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 14:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (c == 's')
+                estado = 15;
+            else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 15:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (c == 'e')
+                estado = 16;
+            else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 16:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (iswhitespace(c)) {
+                printf("<else, >\n");
+                estado = 0;
+            } else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 17:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (c == 'f')
+                estado = 18;
+            else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 18:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (iswhitespace(c)) {
+                printf("<if, >\n");
+                estado = 0;
+            } else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 19:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (c == 'o')
+                estado = 20;
+            else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 20:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (c == 't')
+                estado = 21;
+            else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 21:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (iswhitespace(c)) {
+                printf("<logop, NOT>\n");
+                estado = 0;
+            } else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 22:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (c == 'r')
+                estado = 23;
+            else if (isalphanum(c))
+                estado = 99;
+            else
+                estado = falhar();
+            break;
+
+        case 23:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (iswhitespace(c)) {
+                printf("<logop, OR>\n");
                 estado = 0;
             } else if (isalphanum(c))
                 estado = 99;
@@ -529,6 +778,66 @@ Token proximo_token()
             return (token);
             break;
 
+        case 57:
+                c = code[cont_simb_lido];
+                cont_simb_lido++;
+                if(c == '=') estado = 58;
+                else {
+                     printf("<relop, GT>\n");
+                     token.nome_token = RELOP;
+                     token.atributo = GT;
+                     estado = 0;
+                     return(token);
+                }
+                break;
+
+            case 58:
+                printf("<relop, GE>\n");
+                token.nome_token = RELOP;
+                token.atributo = GE;
+                estado = 0;
+                return(token);
+                break;
+
+            case 59:
+                printf("<relop, EQ>\n");
+                token.nome_token = RELOP;
+				token.atributo = EQ;
+                estado = 0;
+                return(token);
+                break;
+
+            case 60:
+                printf("<, >\n");
+                token.nome_token = 44;
+				token.atributo = -1;
+                estado = 0;
+                return(token);
+                break;
+
+            case 61:
+                printf("<;, >\n");
+                token.nome_token = 59;
+				token.atributo = -1;
+                estado = 0;
+                return(token);
+                break;
+
+            case 62:
+                c = code[cont_simb_lido];
+                cont_simb_lido++;
+                if(c == '=') estado = 63;
+                else estado = falhar();
+                break;
+
+            case 63:
+                printf("<:=, >\n");
+                token.nome_token = 99;
+                token.atributo = -1;
+                estado = 0;
+                return(token);
+                break;
+
         case 99: {
             c = code[cont_simb_lido];
 
@@ -539,7 +848,7 @@ Token proximo_token()
 
             vector<string>::iterator it = find(tabela_simb.begin(), tabela_simb.end(), temp_id);
             int indice_id = distance(tabela_simb.begin(), it);
-            bool achou_id = (it != tabela_simb.end()); 
+            bool achou_id = (it != tabela_simb.end());
 
             if(!achou_id)
                 tabela_simb.push_back(temp_id);
@@ -569,7 +878,6 @@ int main()
 {
     Token token;
 
-    //for(int t=0; t<50; t++) {
     while (token.nome_token != EOF) {
         token = proximo_token();
     }
