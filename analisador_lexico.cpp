@@ -117,17 +117,17 @@ bool isspecialsymbol(char c)
 
 bool iswhitespace(char c)
 {
-    return c == ' ' || c == '\n' || c == '\t';
+    return (c == ' ') || (c == '\n') || (c == '\t');
 }
 
 bool isalphabetic(char c)
 {
-    return isalpha(c) || c == '_';
+    return (c == '_') || isalpha(c);
 }
 
 bool isalphanum(char c)
 {
-    return isalphanum(c) || c == '_';
+    return (c == '_') || isalnum(c);
 }
 
 bool isallowedsymbol(char c)
@@ -553,13 +553,12 @@ Token proximo_token()
 
         case 99:
             c = code[cont_simb_lido];
+
             while (isalphanum(c)) {
                 cont_simb_lido++;
                 temp_id += c;
                 c = code[cont_simb_lido];
             }
-            cout << temp_id;
-            break;
 
             vector<string>::iterator it = find(tabela_simb.begin(), tabela_simb.end(), temp_id);
             int indice_id = distance(tabela_simb.begin(), it);
@@ -575,6 +574,7 @@ Token proximo_token()
             token.atributo = indice_id;
             estado = 0;
             return (token);
+            break;
         }
     }
     token.nome_token = EOF;
