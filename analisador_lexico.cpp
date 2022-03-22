@@ -57,7 +57,6 @@ vector<string> tabela_simb;
 ifstream file("programa.txt");
 string code((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
 
-
 int falhar()
 {
     return 404;
