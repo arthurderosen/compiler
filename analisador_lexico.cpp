@@ -1,6 +1,9 @@
 #include <iostream>
 #include <stdio.h>
 #include <string>
+#include <vector>
+#include <algorithm>
+#include <regex>
 
 using namespace std;
 
@@ -46,10 +49,11 @@ struct Token {
 
 int estado = 0;
 int partida = 0;
-int cont_sim_lido = 0;
+int cont_simb_lido = 0;
 char* code;
 string temp_id;
 string temp_num;
+vector<string> tabela_simb;
 
 char* readFile(char* fileName)
 {
@@ -104,6 +108,13 @@ int falhar()
     return (partida);
 }
 
+bool isspecialsymbol(char c)
+{
+    string cstring(1,c);
+    regex re(R"([(){}[\]*+-/><=.,;:])");
+    return regex_match(cstring, re);
+}
+
 bool iswhitespace(char c)
 {
     return c == ' ' || c == '\n' || c == '\t';
@@ -119,17 +130,25 @@ bool isalphanum(char c)
     return isalphanum(c) || c == '_';
 }
 
+bool isallowedsymbol(char c)
+{
+    return isalphanum(c) || iswhitespace(c) || isspecialsymbol(c);
+}
+
 Token proximo_token()
 {
     Token token;
     char c;
-    while (code[cont_sim_lido] != EOF) {
+    while (code[cont_simb_lido] != EOF) {
         switch (estado) {
         case 0:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
-            temp_id = c;
-            temp_num = c;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+
+            temp_id.clear();
+            temp_id.push_back(c);
+            temp_num.clear();
+            temp_num.push_back(c);
 
             if (iswhitespace(c)) {
                 estado = 0;
@@ -158,8 +177,8 @@ Token proximo_token()
             break;
 
         case 1:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             temp_id += c;
             if (c == 'n')
                 estado = 2;
@@ -170,8 +189,9 @@ Token proximo_token()
             break;
 
         case 2:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
             if (c == 'd')
                 estado = 3;
             else if (isalphanum(c))
@@ -181,8 +201,9 @@ Token proximo_token()
             break;
 
         case 3:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
             if (iswhitespace(c)) {
                 printf("<logop, AND>\n");
                 estado = 0;
@@ -193,8 +214,8 @@ Token proximo_token()
             break;
 
         case 24:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'r')
                 estado = 25;
             else if (isalphanum(c))
@@ -204,8 +225,8 @@ Token proximo_token()
             break;
 
         case 25:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'o')
                 estado = 26;
             else if (isalphanum(c))
@@ -215,8 +236,8 @@ Token proximo_token()
             break;
 
         case 26:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'g')
                 estado = 27;
             else if (c == 'c')
@@ -228,8 +249,8 @@ Token proximo_token()
             break;
 
         case 27:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'r')
                 estado = 28;
             else if (isalphanum(c))
@@ -239,8 +260,8 @@ Token proximo_token()
             break;
 
         case 28:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'a')
                 estado = 29;
             else if (isalphanum(c))
@@ -250,8 +271,8 @@ Token proximo_token()
             break;
 
         case 29:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'm')
                 estado = 30;
             else if (isalphanum(c))
@@ -261,8 +282,8 @@ Token proximo_token()
             break;
 
         case 30:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (iswhitespace(c)) {
                 printf("<program, >\n");
                 estado = 0;
@@ -273,8 +294,8 @@ Token proximo_token()
             break;
 
         case 31:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'e')
                 estado = 32;
             else if (isalphanum(c))
@@ -284,8 +305,8 @@ Token proximo_token()
             break;
 
         case 32:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'd')
                 estado = 33;
             else if (isalphanum(c))
@@ -295,8 +316,8 @@ Token proximo_token()
             break;
 
         case 33:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'u')
                 estado = 34;
             else if (isalphanum(c))
@@ -306,8 +327,8 @@ Token proximo_token()
             break;
 
         case 34:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'r')
                 estado = 35;
             else if (isalphanum(c))
@@ -317,8 +338,8 @@ Token proximo_token()
             break;
 
         case 35:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'e')
                 estado = 36;
             else if (isalphanum(c))
@@ -328,8 +349,8 @@ Token proximo_token()
             break;
 
         case 36:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (iswhitespace(c)) {
                 printf("<procedure, >\n");
                 estado = 0;
@@ -340,8 +361,8 @@ Token proximo_token()
             break;
 
         case 37:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'h')
                 estado = 38;
             else if (isalphanum(c))
@@ -351,8 +372,8 @@ Token proximo_token()
             break;
 
         case 38:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'e')
                 estado = 39;
             else if (isalphanum(c))
@@ -362,8 +383,8 @@ Token proximo_token()
             break;
 
         case 39:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'n')
                 estado = 40;
             else if (isalphanum(c))
@@ -373,8 +394,8 @@ Token proximo_token()
             break;
 
         case 40:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (iswhitespace(c)) {
                 printf("<then, >\n");
                 estado = 0;
@@ -385,8 +406,8 @@ Token proximo_token()
             break;
 
         case 41:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'a')
                 estado = 42;
             else if (isalphanum(c))
@@ -396,8 +417,8 @@ Token proximo_token()
             break;
 
         case 42:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'r')
                 estado = 43;
             else if (isalphanum(c))
@@ -407,8 +428,8 @@ Token proximo_token()
             break;
 
         case 43:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (iswhitespace(c)) {
                 printf("<var, >\n");
                 estado = 0;
@@ -419,8 +440,8 @@ Token proximo_token()
             break;
 
         case 44:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'h')
                 estado = 45;
             else if (isalphanum(c))
@@ -430,8 +451,8 @@ Token proximo_token()
             break;
 
         case 45:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'i')
                 estado = 46;
             else if (isalphanum(c))
@@ -441,8 +462,8 @@ Token proximo_token()
             break;
 
         case 46:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'l')
                 estado = 47;
             else if (isalphanum(c))
@@ -452,8 +473,8 @@ Token proximo_token()
             break;
 
         case 47:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == 'e')
                 estado = 48;
             else if (isalphanum(c))
@@ -463,8 +484,8 @@ Token proximo_token()
             break;
 
         case 48:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (iswhitespace(c)) {
                 printf("<while, >\n");
                 estado = 0;
@@ -499,8 +520,8 @@ Token proximo_token()
             break;
 
         case 54:
-            c = code[cont_sim_lido];
-            cont_sim_lido++;
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
             if (c == '=')
                 estado = 55;
             else if (c == '>')
@@ -531,10 +552,29 @@ Token proximo_token()
             break;
 
         case 99:
-            do {
-                
-            } while (true);
+            c = code[cont_simb_lido];
+            while (isalphanum(c)) {
+                cont_simb_lido++;
+                temp_id += c;
+                c = code[cont_simb_lido];
+            }
+            cout << temp_id;
             break;
+
+            vector<string>::iterator it = find(tabela_simb.begin(), tabela_simb.end(), temp_id);
+            int indice_id = distance(tabela_simb.begin(), it);
+            bool achou_id = it != tabela_simb.end(); 
+
+            if(!achou_id) {
+                tabela_simb.push_back(temp_id);
+                indice_id++;
+            }
+
+            printf("<id, %d>\n", indice_id);
+            token.nome_token = ID;
+            token.atributo = indice_id;
+            estado = 0;
+            return (token);
         }
     }
     token.nome_token = EOF;
@@ -545,7 +585,8 @@ Token proximo_token()
 int main()
 {
     Token token;
-    code = readFile("programa.txt");
+    code = readFile((char*)"programa.txt");
+
     while (token.nome_token != EOF) {
         token = proximo_token();
     }
