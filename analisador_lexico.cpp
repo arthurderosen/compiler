@@ -27,6 +27,8 @@ using namespace std;
 #define LCOMM 270;
 #define ID 271;
 #define NUM 272;
+#define INT 273;
+#define BOOLEAN 274;
 
 //ATRIBUTOS
 //relop
@@ -212,6 +214,11 @@ Token proximo_token()
                 temp_id += c;
                 estado = 5;
             }
+            else if(c == 'o') {
+                cont_simb_lido++;
+                temp_id += c;
+                estado = 78;
+            }
             else
                 estado = 99;
             break;
@@ -367,6 +374,11 @@ Token proximo_token()
                 cont_simb_lido++;
                 temp_id += c;
                 estado = 18;
+            }
+            else if(c == 'n') {
+                cont_simb_lido++;
+                 temp_id += c;
+                 estado = 76;
             }
             else
                 estado = 99;
@@ -963,6 +975,101 @@ Token proximo_token()
             else
                 estado = 99;
             break;
+
+         case 76:
+            c = code[cont_simb_lido];
+            if (c == 't'){
+                cont_simb_lido++;
+                temp_id += c;
+                estado = 77;
+            }
+            else
+                estado = 99;
+            break;
+
+        case 77:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (iswhitespace(c)) {
+                printf("<int, >\n");
+                token.nome_token = INT;
+                token.atributo = -1;
+                estado = 0;
+            }
+            else
+                estado = 99;
+            break;
+
+        case 78:
+            c = code[cont_simb_lido];
+            if (c == 'o'){
+                cont_simb_lido++;
+                temp_id += c;
+                estado = 79;
+            }
+            else
+                estado = 99;
+            break;
+
+        case 79:
+            c = code[cont_simb_lido];
+            if (c == 'l'){
+                cont_simb_lido++;
+                temp_id += c;
+                estado = 80;
+            }
+            else
+                estado = 99;
+            break;
+
+        case 80:
+            c = code[cont_simb_lido];
+            if (c == 'e'){
+                cont_simb_lido++;
+                temp_id += c;
+                estado = 81;
+            }
+            else
+                estado = 99;
+            break;
+
+        case 81:
+            c = code[cont_simb_lido];
+            if (c == 'a'){
+                cont_simb_lido++;
+                temp_id += c;
+                estado = 82;
+            }
+            else
+                estado = 99;
+            break;
+
+         case 82:
+            c = code[cont_simb_lido];
+            if (c == 'n'){
+                cont_simb_lido++;
+                temp_id += c;
+                estado = 83;
+            }
+            else
+                estado = 99;
+            break;
+
+         case 83:
+            c = code[cont_simb_lido];
+            cont_simb_lido++;
+            temp_id += c;
+            if (iswhitespace(c)) {
+                printf("<boolean, >\n");
+                token.nome_token = BOOLEAN;
+                token.atributo = -1;
+                estado = 0;
+            }
+            else
+                estado = 99;
+            break;
+        
 
         case 99:
             c = code[cont_simb_lido];
