@@ -342,8 +342,13 @@ Token proximo_token()
                 estado = 0;
                 return(token);
             }
-            else if(c == '.')
+            else if(c == '.'){
+                printf("<end, >\n");
+                token.nome_token = END;
+                token.atributo = -1;
                 estado = 72;
+                return(token);
+            }
             else
                 estado = 99;
             break;
