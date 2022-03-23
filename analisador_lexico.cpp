@@ -23,7 +23,7 @@ using namespace std;
 #define RELOP 266;
 #define ARIOP 267;
 #define LOGOP 268;
-#define ASSOP 269;
+#define ASSOP 269; 
 #define LCOMM 270;
 #define ID 271;
 #define NUM 272;
@@ -330,6 +330,8 @@ Token proximo_token()
                 printf("<end, >\n");
                 estado = 0;
             }
+            else if(c == '.')
+                estado = 72;
             else
                 estado = 99;
             break;
@@ -943,7 +945,7 @@ Token proximo_token()
         
         case 73:
             printf("<., >\n");
-            token.nome_token = c;
+            token.nome_token = '.';
             token.atributo = -1;
             estado = 0;
             return(token);
@@ -1122,6 +1124,8 @@ int main()
 
     while (token.nome_token != EOF) {
         token = proximo_token();
+        if (token.nome_token == '.' )
+          return 0;
     }
 
 }
