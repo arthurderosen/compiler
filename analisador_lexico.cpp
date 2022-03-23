@@ -822,11 +822,14 @@ Token proximo_token()
 
         case 54:
             c = code[cont_simb_lido];
-            cont_simb_lido++;
-            if (c == '=')
+            if (c == '=') {
+                cont_simb_lido++;
                 estado = 55;
-            else if (c == '>')
+            }
+            else if (c == '>') {
+                cont_simb_lido++;
                 estado = 56;
+            }
             else {
                 printf("<relop, LT>\n");
                 token.nome_token = RELOP;
@@ -854,8 +857,10 @@ Token proximo_token()
 
         case 57:
             c = code[cont_simb_lido];
-            cont_simb_lido++;
-            if(c == '=') estado = 58;
+            if(c == '=') {
+                cont_simb_lido++;
+                estado = 58;
+            }
             else {
                 printf("<relop, GT>\n");
                 token.nome_token = RELOP;
