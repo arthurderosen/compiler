@@ -46,6 +46,6 @@ struct Token {
 };
 
 Token proximo_token();
-
+bool isalphabetic(char c);
 
 #endif
