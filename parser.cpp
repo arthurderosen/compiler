@@ -1,6 +1,7 @@
-#include "lexer.h"
-#include <iostream>
 #include <stdio.h>
+#include <iostream>
+#include "lexer.h"
+
 using namespace std;
 
 Token token;
@@ -271,10 +272,12 @@ void r_letra() {
 
 int main()
 {
+  r_programa();
+  /*  
     while (token.nome_token != EOF) {
         token = proximo_token();
         if (token.nome_token == '.' )
           return 0;
     }
-
+  */
 }

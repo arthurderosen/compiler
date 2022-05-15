@@ -1,6 +1,6 @@
 ## Compiler Project
 
-> Trabalho realizado na disciplina de compiladores - 2022
+> Experimental work for Computer Science's Compilers discipline
 
 <p align="center">
   <img src="https://img.shields.io/github/license/arthurderosen/compiler"/>
