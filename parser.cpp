@@ -64,6 +64,7 @@ void r_letra();
 //PROGRAMA E BLOCO
 void r_programa(){
   token = proximo_token();
+  cout << token.nome;
   if (token.nome == PROGRAM ){
     r_id();
     token = proximo_token();
@@ -273,6 +274,7 @@ void r_letra() {
 int main()
 {
   //r_programa();
+
   while (token.nome != EOF) {
       token = proximo_token();
       if (token.nome == '.' )
