@@ -64,10 +64,10 @@ void r_letra();
 //PROGRAMA E BLOCO
 void r_programa(){
   token = proximo_token();
-  if (token.nome_token == PROGRAM ){
+  if (token.nome == PROGRAM ){
     r_id();
     token = proximo_token();
-    if(token.nome_token == ';'){
+    if(token.nome == ';'){
       r_bloco();
     } 
   }
@@ -135,7 +135,7 @@ void r_sec_param_form(){
 
 void r_tipo() {
   token = proximo_token();
-  if ((token.nome_token != INT) && (token.nome_token != BOOLEAN)) {
+  if ((token.nome != INT) && (token.nome != BOOLEAN)) {
     cout<<"ERRO. Esperado token INT ou BOOLEAN";
   }
 }
@@ -162,7 +162,7 @@ void r_comand(){
 void r_atrib() {
   r_var();
   token = proximo_token();
-  if (token.nome_token == ASSOP) {
+  if (token.nome == ASSOP) {
     r_expr();
   }
   else {
@@ -238,7 +238,7 @@ void r_list_exprl() {
 
 void r_relacao() {
   token = proximo_token();
-  if (token.nome_token != RELOP)
+  if (token.nome != RELOP)
     cout<<"ERRO. Esperado token RELOP";
 }
 
@@ -259,13 +259,13 @@ void r_idl(){
 
 void r_digit() {
   token = proximo_token();
-  if (!isdigit(token.nome_token))
+  if (!isdigit(token.nome))
     cout<<"ERRO. Esperado token digito";
 }
 
 void r_letra() {
   token = proximo_token();
-  if (!isalphabetic(token.nome_token))
+  if (!isalphabetic(token.nome))
     cout<<"ERRO. Esperado token letra";
 }
   
@@ -273,9 +273,9 @@ void r_letra() {
 int main()
 {
   //r_programa();
-  while (token.nome_token != EOF) {
+  while (token.nome != EOF) {
       token = proximo_token();
-      if (token.nome_token == '.' )
+      if (token.nome == '.' )
         return 0;
   }
 }

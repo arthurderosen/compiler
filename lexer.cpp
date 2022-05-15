@@ -158,7 +158,7 @@ Token proximo_token()
             temp_id += c;
             if (iswhitespace(c)) {
                 printf("<logop, AND>\n");
-                token.nome_token = LOGOP;
+                token.nome = LOGOP;
                 token.atributo = AND;
                 estado = 0;
                 return(token);
@@ -222,7 +222,7 @@ Token proximo_token()
             temp_id += c;
             if (iswhitespace(c)) {
                 printf("<begin, >\n");
-                token.nome_token = BEGIN;
+                token.nome = BEGIN;
                 token.atributo = -1;
                 estado = 0;
                 return(token);
@@ -253,7 +253,7 @@ Token proximo_token()
             temp_id += c;
             if (iswhitespace(c)) {
                 printf("<do, >\n");
-                token.nome_token = DO;
+                token.nome = DO;
                 token.atributo = -1;
                 estado = 0;
                 return(token);
@@ -294,14 +294,14 @@ Token proximo_token()
             temp_id += c;
             if (iswhitespace(c)) {
                 printf("<end, >\n");
-                token.nome_token = END;
+                token.nome = END;
                 token.atributo = -1;
                 estado = 0;
                 return(token);
             }
             else if(c == '.'){
                 printf("<end, >\n");
-                token.nome_token = END;
+                token.nome = END;
                 token.atributo = -1;
                 estado = 72;
                 return(token);
@@ -338,7 +338,7 @@ Token proximo_token()
             temp_id += c;
             if (iswhitespace(c)) {
                 printf("<else, >\n");
-                token.nome_token = ELSE;
+                token.nome = ELSE;
                 token.atributo = -1;
                 estado = 0;
                 return(token);
@@ -369,7 +369,7 @@ Token proximo_token()
             temp_id += c;
             if (iswhitespace(c)) {
                 printf("<if, >\n");
-                token.nome_token = IF;
+                token.nome = IF;
                 token.atributo = -1;
                 estado = 0;
                 return(token);
@@ -406,7 +406,7 @@ Token proximo_token()
             temp_id += c;
             if (iswhitespace(c)) {
                 printf("<logop, NOT>\n");
-                token.nome_token = LOGOP;
+                token.nome = LOGOP;
                 token.atributo = NOT;
                 estado = 0;
                 return(token);
@@ -432,7 +432,7 @@ Token proximo_token()
             temp_id += c;
             if (iswhitespace(c)) {
                 printf("<logop, OR>\n");
-                token.nome_token = LOGOP;
+                token.nome = LOGOP;
                 token.atributo = OR;
                 estado = 0;
                 return(token);
@@ -517,7 +517,7 @@ Token proximo_token()
             cont_simb_lido++;
             if (iswhitespace(c)) {
                 printf("<program, >\n");
-                token.nome_token = PROGRAM;
+                token.nome = PROGRAM;
                 token.atributo = -1;
                 estado = 0;
                 return(token);
@@ -586,7 +586,7 @@ Token proximo_token()
             cont_simb_lido++;
             if (iswhitespace(c)) {
                 printf("<procedure, >\n");
-                token.nome_token = PROCEDURE;
+                token.nome = PROCEDURE;
                 token.atributo = -1;
                 estado = 0;
                 return(token);
@@ -633,7 +633,7 @@ Token proximo_token()
             cont_simb_lido++;
             if (iswhitespace(c)) {
                 printf("<then, >\n");
-                token.nome_token = THEN;
+                token.nome = THEN;
                 token.atributo = -1;
                 estado = 0;
                 return(token);
@@ -669,7 +669,7 @@ Token proximo_token()
             cont_simb_lido++;
             if (iswhitespace(c)) {
                 printf("<var, >\n");
-                token.nome_token = VAR;
+                token.nome = VAR;
                 token.atributo = -1;
                 estado = 0;
                 return(token);
@@ -727,7 +727,7 @@ Token proximo_token()
             cont_simb_lido++;
             if (iswhitespace(c)) {
                 printf("<while, >\n");
-                token.nome_token = WHILE;
+                token.nome = WHILE;
                 token.atributo = -1;
                 estado = 0;
                 return(token);
@@ -751,7 +751,7 @@ Token proximo_token()
             }
             else {
                 printf("<num, %s>\n",temp_num.c_str());
-                token.nome_token = NUM;
+                token.nome = NUM;
                 token.atributo = atoi(temp_num.c_str());
                 estado = 0;
                 return (token);
@@ -760,7 +760,7 @@ Token proximo_token()
 
         case 51:
             printf("<ariop, PLUS>\n");
-            token.nome_token = ARIOP;
+            token.nome = ARIOP;
             token.atributo = PLUS;
             estado = 0;
             return (token);
@@ -768,7 +768,7 @@ Token proximo_token()
 
         case 52:
             printf("<ariop, MINUS>\n");
-            token.nome_token = ARIOP;
+            token.nome = ARIOP;
             token.atributo = MINUS;
             estado = 0;
             return (token);
@@ -776,7 +776,7 @@ Token proximo_token()
 
         case 53:
             printf("<ariop, MULTI>\n");
-            token.nome_token = ARIOP;
+            token.nome = ARIOP;
             token.atributo = MULTI;
             estado = 0;
             return (token);
@@ -794,7 +794,7 @@ Token proximo_token()
             }
             else {
                 printf("<relop, LT>\n");
-                token.nome_token = RELOP;
+                token.nome = RELOP;
                 token.atributo = LT;
                 estado = 0;
                 return (token);
@@ -803,7 +803,7 @@ Token proximo_token()
 
         case 55:
             printf("<relop, LE>\n");
-            token.nome_token = RELOP;
+            token.nome = RELOP;
             token.atributo = LE;
             estado = 0;
             return (token);
@@ -811,7 +811,7 @@ Token proximo_token()
 
         case 56:
             printf("<relop, NE>\n");
-            token.nome_token = RELOP;
+            token.nome = RELOP;
             token.atributo = NE;
             estado = 0;
             return (token);
@@ -825,7 +825,7 @@ Token proximo_token()
             }
             else {
                 printf("<relop, GT>\n");
-                token.nome_token = RELOP;
+                token.nome = RELOP;
                 token.atributo = GT;
                 estado = 0;
                 return(token);
@@ -834,7 +834,7 @@ Token proximo_token()
 
         case 58:
             printf("<relop, GE>\n");
-            token.nome_token = RELOP;
+            token.nome = RELOP;
             token.atributo = GE;
             estado = 0;
             return(token);
@@ -842,7 +842,7 @@ Token proximo_token()
 
         case 59:
             printf("<relop, EQ>\n");
-            token.nome_token = RELOP;
+            token.nome = RELOP;
             token.atributo = EQ;
             estado = 0;
             return(token);
@@ -850,7 +850,7 @@ Token proximo_token()
 
         case 60:
             printf("<,, >\n");
-            token.nome_token = c;
+            token.nome = c;
             token.atributo = -1;
             estado = 0;
             return(token);
@@ -858,7 +858,7 @@ Token proximo_token()
 
         case 61:
             printf("<;, >\n");
-            token.nome_token = c;
+            token.nome = c;
             token.atributo = -1;
             estado = 0;
             return(token);
@@ -873,7 +873,7 @@ Token proximo_token()
 
         case 63:
             printf("<assop, >\n");
-            token.nome_token = ASSOP;
+            token.nome = ASSOP;
             token.atributo = -1;
             estado = 0;
             return(token);
@@ -881,7 +881,7 @@ Token proximo_token()
 
         case 64:
             printf("<(, >\n");
-            token.nome_token = c;
+            token.nome = c;
             token.atributo = -1;
             estado = 0;
             return(token);
@@ -889,7 +889,7 @@ Token proximo_token()
 
         case 65:
             printf("<), >\n");
-            token.nome_token = c;
+            token.nome = c;
             token.atributo = -1;
             estado = 0;
             return(token);
@@ -897,7 +897,7 @@ Token proximo_token()
 
         case 66:
             printf("<[, >\n");
-            token.nome_token = c;
+            token.nome = c;
             token.atributo = -1;
             estado = 0;
             return(token);
@@ -905,7 +905,7 @@ Token proximo_token()
 
         case 67:
             printf("<], >\n");
-            token.nome_token = c;
+            token.nome = c;
             token.atributo = -1;
             estado = 0;
             return(token);
@@ -913,7 +913,7 @@ Token proximo_token()
 
         case 68:
             printf("<{, >\n");
-            token.nome_token = c;
+            token.nome = c;
             token.atributo = -1;
             estado = 0;
             return(token);
@@ -921,7 +921,7 @@ Token proximo_token()
 
         case 69:
             printf("<}, >\n");
-            token.nome_token = c;
+            token.nome = c;
             token.atributo = -1;
             estado = 0;
             return(token);
@@ -936,7 +936,7 @@ Token proximo_token()
 
         case 71:
             printf("<lcomm, >\n");
-            token.nome_token = LCOMM;
+            token.nome = LCOMM;
             token.atributo = -1;
             estado = 0;
             return(token);
@@ -951,7 +951,7 @@ Token proximo_token()
 
         case 73:
             printf("<., >\n");
-            token.nome_token = '.';
+            token.nome = '.';
             token.atributo = -1;
             estado = 0;
             return(token);
@@ -974,7 +974,7 @@ Token proximo_token()
             temp_id += c;
             if (iswhitespace(c)) {
                 printf("<ariop, DIV>\n");
-                token.nome_token = ARIOP;
+                token.nome = ARIOP;
                 token.atributo = DIV;
                 estado = 0;
                 return (token);
@@ -1001,7 +1001,7 @@ Token proximo_token()
             temp_id += c;
             if (iswhitespace(c)) {
                 printf("<int, >\n");
-                token.nome_token = INT;
+                token.nome = INT;
                 token.atributo = -1;
                 estado = 0;
             }
@@ -1070,7 +1070,7 @@ Token proximo_token()
             temp_id += c;
             if (iswhitespace(c)) {
                 printf("<boolean, >\n");
-                token.nome_token = BOOLEAN;
+                token.nome = BOOLEAN;
                 token.atributo = -1;
                 estado = 0;
             }
@@ -1102,7 +1102,7 @@ Token proximo_token()
 
                 //cout<<endl<<temp_id<<endl;
                 printf("<id, %d>\n", indice_id+1);
-                token.nome_token = ID;
+                token.nome = ID;
                 token.atributo = indice_id;
                 cont_simb_lido--;
                 estado = 0;
@@ -1113,13 +1113,13 @@ Token proximo_token()
         case 404:
             printf("Erro de compilacao");
             //cout<<endl<<temp_id<<endl;
-            token.nome_token = EOF;
+            token.nome = EOF;
             token.atributo = -1;
             return (token);
             break;
         }
     }
-    token.nome_token = EOF;
+    token.nome = EOF;
     token.atributo = -1;
     return (token);
 }

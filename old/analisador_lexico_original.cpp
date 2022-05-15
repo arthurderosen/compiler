@@ -26,7 +26,7 @@
 
 
 struct Token{
- int nome_token;
+ int nome;
  int atributo;
 };
 
@@ -123,7 +123,7 @@ Token proximo_token()
 			case 2:
 				cont_sim_lido++;
 				printf("<relop, LE>\n");
-				token.nome_token = RELOP;
+				token.nome = RELOP;
 				token.atributo = LE;
 				estado = 0;
 				return(token);
@@ -132,7 +132,7 @@ Token proximo_token()
 			case 3:
 				cont_sim_lido++;
 				printf("<relop, NE>\n");
-				token.nome_token = RELOP;
+				token.nome = RELOP;
 				token.atributo = NE;
 				estado = 0;
 				return(token);
@@ -141,7 +141,7 @@ Token proximo_token()
 			case 4:
 				cont_sim_lido++;
 				printf("<relop, LT>\n");
-				token.nome_token = RELOP;
+				token.nome = RELOP;
 				token.atributo = LT;
 				estado = 0;
 				return(token);
@@ -150,7 +150,7 @@ Token proximo_token()
 			case 5:
 				cont_sim_lido++;
 				printf("<relop, EQ>\n");
-				token.nome_token = RELOP;
+				token.nome = RELOP;
 				token.atributo = EQ;
 				estado = 0;
 				return(token);
@@ -166,7 +166,7 @@ Token proximo_token()
 			case 7:
 				cont_sim_lido++;
 				printf("<relop, GE>\n");
-				token.nome_token = RELOP;
+				token.nome = RELOP;
 				token.atributo = GE;
 				estado = 0;
 				return(token);
@@ -175,7 +175,7 @@ Token proximo_token()
 			case 8:
 				cont_sim_lido++;
 				printf("<relop, GT>\n");
-				token.nome_token = RELOP;
+				token.nome = RELOP;
 				token.atributo = GT;
 				//ATENÇÃO - CORREÇÃO: foi acrescentado o comando "estado = 0;"
 				estado = 0;
@@ -242,7 +242,7 @@ Token proximo_token()
 				{
 					/*implementar ações referentes aos estado */
 					estado = falhar();
-					token.nome_token = -1;
+					token.nome = -1;
 					token.atributo = -1;
 					return(token);
 				}
@@ -250,7 +250,7 @@ Token proximo_token()
 		}
 
 	}
-	token.nome_token = EOF;
+	token.nome = EOF;
 	token.atributo = -1;
 	return(token);
 }

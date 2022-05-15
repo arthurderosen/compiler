@@ -41,7 +41,7 @@
 #define NOT 312
 
 struct Token {
-    int nome_token;
+    int nome;
     int atributo;
 };
 
