@@ -15,7 +15,7 @@ int partida = 0;
 int cont_simb_lido = 0;
 vector<string> tabela_simb;
 
-ifstream file("programa.txt");
+ifstream file("teste.txt");
 string code((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
 
 bool isspecialsymbol(char c)

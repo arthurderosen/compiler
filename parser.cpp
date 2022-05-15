@@ -272,12 +272,10 @@ void r_letra() {
 
 int main()
 {
-  r_programa();
-  /*  
-    while (token.nome_token != EOF) {
-        token = proximo_token();
-        if (token.nome_token == '.' )
-          return 0;
-    }
-  */
+  //r_programa();
+  while (token.nome_token != EOF) {
+      token = proximo_token();
+      if (token.nome_token == '.' )
+        return 0;
+  }
 }

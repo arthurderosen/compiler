@@ -1,1 +1,11 @@
-testando
+program correto;
+while
+whileaaa
+begin
+    a:=-2;
+    b:=10
+    begin
+        if (a<1) then
+        b:=1
+    end
+end.
