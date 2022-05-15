@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <iostream>
+#include <vector>
 #include "lexer.h"
 
 using namespace std;
 
-Token token;
 //PROGRAMA E BLOCO
 void r_programa();
 void r_bloco();
@@ -14,6 +14,7 @@ void r_bloco_ll();
 //DECLARAÇÕES
 void r_pdecl_var();
 void r_decl();
+void r_decl_l();
 void r_decl_var();
 void r_listaid();
 void r_listaidl();
@@ -59,6 +60,58 @@ void r_idl();
 void r_digit();
 void r_letra();
 
+struct First {
+  vector<int> digit{'_','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z', 'A', 'B', 'C', 'D', 'E', 'F', 'G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+  vector<int> letra{0,1,2,3,4,5,6,7,8,9};
+  vector<int> tipo{INT, BOOLEAN};
+  vector<int> programa;
+  vector<int> bloco;
+  vector<int> bloco_l;
+  vector<int> bloco_ll;
+  vector<int> pdecl_var;
+  vector<int> decl;
+  vector<int> decl_l;
+  vector<int> decl_var;
+  vector<int> listaid;
+  vector<int> listaidl;
+  vector<int> pdecl_subr;
+  vector<int> decl_proc;
+  vector<int> decl_procl;
+  vector<int> param_form;
+  vector<int> param_forml;
+  vector<int> sec_param_form;
+  vector<int> tipo;
+  vector<int> comand_comp;
+  vector<int> comand_compl;
+  vector<int> comand_compll;
+  vector<int> comand;
+  vector<int> atrib;
+  vector<int> chama_proc;
+  vector<int> chama_procl;
+  vector<int> comand_cond;
+  vector<int> cond_else;
+  vector<int> comand_rep;
+  vector<int> expr;
+  vector<int> expr_simp;
+  vector<int> e;
+  vector<int> el;
+  vector<int> ell;
+  vector<int> termo;
+  vector<int> termol;
+  vector<int> fator;
+  vector<int> var;
+  vector<int> list_expr;
+  vector<int> list_exprl;
+  vector<int> relacao;
+  vector<int> num;
+  vector<int> id;
+  vector<int> idl;
+};
+
+First first;
+Token token;
+
+const int empty = 0;
 
 
 //PROGRAMA E BLOCO
@@ -91,12 +144,20 @@ void r_bloco_ll(){
 //DECLARACOES
 
 void r_pdecl_var(){
-  
+  r_decl_var();
+  r_decl();
 }
 
 void r_decl(){
-  
+  if (token.nome == ';') {
+
+  }
 }
+
+void r_decl_l() {
+
+ }
+
 
 void r_decl_var(){
   
