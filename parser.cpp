@@ -7,6 +7,8 @@
 
 using namespace std;
 
+void printar(vector<int>& vec);
+
 //PROGRAMA E BLOCO
 void r_programa();
 void r_bloco();
@@ -104,6 +106,13 @@ void r_programa(){
       cout<<"<parser, ;"<<endl;
       token = proximo_token();
       r_bloco();
+      if(token.nome == '.'){
+        cout<<"FIM DO PROGRAMA";
+        return;
+      }
+      else
+        print_parser(".");
+        return;
     }
     print_parser(";");
   }
@@ -117,9 +126,7 @@ void r_bloco() {
 }
 
 void r_blocol(){
-  cout<<"blocol";
   if (vector_contains(first.p_decl_var, token.nome)) {
-    cout<<"if";
     r_p_decl_var();
     r_blocoll();
   }
@@ -168,8 +175,9 @@ void r_lista_id(){
 
 void r_lista_idl(){
   if (token.nome == ','){
+    cout<<"<parser, ,>"<<endl;
     token = proximo_token();
-    cout<<"<parser, ,"<<endl;
+    r_id();
     r_lista_idl();   
   }
 }
@@ -179,7 +187,7 @@ void r_p_decl_subr(){
     //token = proximo_token();
     r_decl_proc();
     if (token.nome == ';'){
-      cout<<"<parser, ;"<<endl;
+      cout<<"<parser, ;>"<<endl;
       token = proximo_token();
       r_p_decl_subr();
     }
@@ -238,7 +246,7 @@ void r_sec_param_form(){
   if (vector_contains(first.listaid, token.nome)){
     r_lista_id();
     if (token.nome == ':'){
-      cout<<"<parser, :"<<endl;
+      cout<<"<parser, :>"<<endl;
       token = proximo_token();
       r_id();
     }
@@ -288,7 +296,8 @@ void r_comand_compl(){
 }
 
 void r_comand(){
-  if (vector_contains(first.atrib, token.nome))
+  cout<<token.nome<<endl;
+  if (vector_contains(first.id, token.nome))
     r_atrib();
   else if (vector_contains(first.chama_proc, token.nome))
     r_chama_proc();
@@ -306,6 +315,7 @@ void r_atrib() {
   if (token.nome == ASSOP) {
     cout<<"<parser, assop>"<<endl;
     token = proximo_token();
+    cout<<token.nome<<endl;
     r_expr();
   }
   else {
@@ -398,12 +408,10 @@ void r_list_exprl() {
 }
 
 void r_expr() {
-  if(vector_contains(first.expr_simp, token.nome)) {
+  cout<<token.nome<<endl;
     r_expr_simp();
-
-    token = proximo_token();
     r_exprl();
-  }
+
 }
 
 void r_exprl() {
@@ -418,9 +426,17 @@ void r_exprl() {
 }
 
 void r_expr_simp() {
-  if(token.atributo == PLUS || token.atributo == MINUS) {
-    cout<<"<parser, + ->"<<endl;
-    token = proximo_token();
+  if(token.atributo == PLUS){
+    cout<<"<parser, +>"<<endl;
+    token = proximo_token();  
+  }
+  else if(token.atributo == MINUS){
+    cout<<"<parser, ->"<<endl;
+    token = proximo_token();   
+  }
+  else{
+    print_parser("+ ou -");
+    return; 
   }
   r_el();
 }
@@ -491,19 +507,24 @@ void r_fator() {
 
 void r_var() {
   if (token.nome == ID) {
+    cout<<"<parser, id>"<<endl;
     token = proximo_token();
-    r_expr();
   }
   else
     print_parser("ID");
 }
 
 void r_tipo() {
-  if (!vector_contains(first.tipo, token.nome)) {
-    print_parser("INT ou BOOLEAN");
+  if (token.nome == INT) {
+    cout<<"<parser, int>"<<endl;
+    token = proximo_token();
   }
-  cout<<"<parser, int boolean>"<<endl;
-  
+  else if (token.nome == BOOLEAN) {
+    cout<<"<parser,  boolean>"<<endl;
+    token = proximo_token();
+  }
+  else
+    print_parser("INT ou BOOLEAN");
 }
 
 void r_relacao() {
@@ -514,8 +535,10 @@ void r_relacao() {
 }
 
 void r_num(){
-  if (token.nome == NUM)
+  if (token.nome == NUM) {
+    cout<<"<parser, num>"<<endl;
     token = proximo_token();
+  }
   else
     print_parser("NUM");
 }
@@ -585,11 +608,16 @@ void build_first_sets() {
   push_back_empty(first.blocol);
 }
 
-
+void printar(vector<int>& vec){
+  for(int i: vec){
+    cout<<", "<<i;
+  }
+}
 
 int main()
 {
   build_first_sets();
+  
 
   token = proximo_token();
   r_programa();

@@ -1011,6 +1011,7 @@ Token proximo_token()
                 token.nome = INT;
                 token.atributo = -1;
                 estado = 0;
+                return (token);
             }
             else
                 estado = 99;
@@ -1080,6 +1081,7 @@ Token proximo_token()
                 token.nome = BOOLEAN;
                 token.atributo = -1;
                 estado = 0;
+                return (token);
             }
             else
                 estado = 99;
