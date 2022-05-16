@@ -63,11 +63,11 @@ void r_digit();
 void r_letra();
 
 struct First {
-  vector<int> letra {'_','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z', 'A', 'B', 'C', 'D', 'E', 'F', 'G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
-  vector<int> digito {0,1,2,3,4,5,6,7,8,9};
+  vector<int> id {ID};
+  vector<int> num {NUM};
   vector<int> tipo {INT, BOOLEAN};
   vector<int> relacao {RELOP};
-  vector<int> programa, bloco, blocol, blocoll, p_decl_var, decl, decll, decl_var, listaid, listaidl, pdecl_subr, decl_proc, decl_procl, param_form, param_forml, sec_param_form, comand_comp,comand_compl,comand_compll,comand,atrib,chama_proc,chama_procl,comand_cond,cond_else,comand_rep,expr,expr_simp,e,el,ell,termo,termol,fator,var,list_expr,list_exprl,num,id,idl;
+  vector<int> programa, bloco, blocol, blocoll, p_decl_var, decl, decll, decl_var, listaid, listaidl, pdecl_subr, decl_proc, decl_procl, param_form, param_forml, sec_param_form, comand_comp,comand_compl,comand_compll,comand,atrib,chama_proc,chama_procl,comand_cond,cond_else,comand_rep,expr,expr_simp,e,el,ell,termo,termol,fator,var,list_expr,list_exprl,num,id;
 };
 
 First first;
@@ -293,39 +293,9 @@ void r_relacao() {
 //NUMEROS E IDENFICADORES
 
 void r_num(){
-  token = proximo_token();
-  if (vector_contains(first.num, token.nome)) {
-    r_digit();
-    r_num();
-  }
-  return;
 }
 
 void r_id(){ 
-  token = proximo_token();
-  if (vector_contains(first.id, token.nome)) {
-    r_letra();
-    r_idl();
-  }
-  else
-    print_parser("first(id)");
-}
-
-void r_idl(){
-  
-}
-
-
-void r_digit() {
-  token = proximo_token();
-  if (!isdigit(token.nome))
-    print_parser("digito");
-}
-
-void r_letra() {
-  token = proximo_token();
-  if (!isalphabetic(token.nome))
-    print_parser("letra");
 }
 
 
@@ -333,14 +303,6 @@ int main()
 {
 
   //TODO: terminar declaracao dos firsts
-  push_back_vector(first.id, first.letra);
-
-  push_back_vector(first.idl, first.letra);
-  push_back_vector(first.idl, first.digito);
-  push_back_empty(first.idl);
-
-  push_back_vector(first.num, first.digito);
-  push_back_empty(first.num);
   //
 
   token = proximo_token();
