@@ -15,7 +15,7 @@ int partida = 0;
 int cont_simb_lido = 0;
 vector<string> tabela_simb;
 
-ifstream file("teste.txt");
+ifstream file("teste2.txt");
 string code((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
 
 bool isspecialsymbol(char c)
@@ -43,7 +43,7 @@ bool isresto(char c) {
 void print_lexer(string output) {
     //Comentado para nao printar no parser
     
-    //cout<<output;
+    cout<<output;
 }
 
 

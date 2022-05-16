@@ -20,7 +20,7 @@ void r_decll();
 void r_decl_var();
 void r_lista_id();
 void r_lista_idl();
-void r_pdecl_subr();
+void r_p_decl_subr();
 void r_decl_proc();
 void r_decl_procl();
 void r_param_form();
@@ -31,7 +31,6 @@ void r_tipo();
 //COMANDOS
 void r_comand_comp();
 void r_comand_compl();
-void r_comand_compll();
 void r_comand();
 void r_atrib();
 void r_chama_proc();
@@ -100,12 +99,14 @@ void r_programa(){
   if (token.nome == PROGRAM ){
     token = proximo_token();
     r_id();
-
     if(token.nome == ';'){
       token = proximo_token();
       r_bloco();
-    } 
+    }
+    print_parser(";");
   }
+  else
+    print_parser("program");
 }
 
 void r_bloco() {
@@ -114,12 +115,15 @@ void r_bloco() {
 }
 
 void r_blocol(){
-  r_p_decl_var();
-  r_blocoll();
+  if (vector_contains(first.p_decl_var, token.nome)) {
+    r_p_decl_var();
+    r_blocoll();
+  }
 }
 
 void r_blocoll(){
-  r_pdecl_subr(); 
+  if (vector_contains(first.pdecl_subr, token.nome))
+    r_p_decl_subr();
 }
 
 //DECLARACOES
@@ -139,7 +143,7 @@ void r_decl(){
 }
 
 void r_decll() {
-  if (vector_contains(first.decll, token.nome)) {
+  if (vector_contains(first.p_decl_var, token.nome)) {
     token = proximo_token();
     r_p_decl_var();
   }
@@ -163,12 +167,13 @@ void r_lista_idl(){
   }
 }
 
-void r_pdecl_subr(){
-  if (vector_contains(first.decl_var, token.nome)) {
+void r_p_decl_subr(){
+  if (vector_contains(first.decl_proc, token.nome)){
+    //token = proximo_token();
     r_decl_proc();
     if (token.nome == ';'){
       token = proximo_token();
-      r_pdecl_subr();
+      r_p_decl_subr();
     }
     else
       print_parser(";");
@@ -187,19 +192,56 @@ void r_decl_proc(){
 }
 
 void r_decl_procl(){
-  
+  if (vector_contains(first.param_form, token.nome)){
+    r_param_form();
+  } 
 }
 
 void r_param_form(){
-  
+  if (token.nome == '('){
+    token = proximo_token();
+    r_sec_param_form();
+    r_param_forml();
+    if (token.nome == ')'){
+      token = proximo_token();
+    }
+    else
+      print_parser(")");
+  }
 }
 
 void r_param_forml(){
+  if (token.nome == ';'){
+    token = proximo_token();
+    r_sec_param_form();
+    r_param_forml();   
+  }
+  else
+    print_parser(";");
   
 }
 
+
 void r_sec_param_form(){
-  
+  if (vector_contains(first.listaid, token.nome)){
+    r_lista_id();
+    if (token.nome == ':'){
+      token = proximo_token();
+      r_id();
+    }
+    else
+      print_parser(":");
+  }
+  if (vector_contains(first.var, token.nome)){
+    r_var();
+    r_lista_id();
+    if (token.nome == ':'){
+      token = proximo_token();
+      r_id();
+    }
+    else
+      print_parser(":");
+  }
 }
 
 
@@ -225,10 +267,6 @@ void r_comand_compl(){
     r_comand();
     r_comand_compl();
   }
-}
-
-void r_comand_compll(){
-  
 }
 
 void r_comand(){
@@ -431,22 +469,30 @@ void r_tipo() {
   if (!vector_contains(first.tipo, token.nome)) {
     print_parser("INT ou BOOLEAN");
   }
+  
 }
 
 void r_relacao() {
-  if (token.nome != RELOP)
+  if (token.nome == RELOP)
+    token = proximo_token();
+  else
     print_parser("RELOP");
 }
 
 void r_num(){
-  if (token.nome != NUM)
+  if (token.nome == NUM)
+    token = proximo_token();
+  else
     print_parser("NUM");
 }
 
 void r_id(){ 
-    if (token.nome != ID)
-    print_parser("ID");
+    if (token.nome == ID)
+      token = proximo_token();
+    else
+      print_parser("ID");
 }
+
 
 void build_first_sets() {
   push_back_vector(first.var, first.id);
@@ -498,6 +544,8 @@ void build_first_sets() {
   push_back_vector(first.blocol, first.p_decl_var);
   push_back_empty(first.blocol);
 }
+
+
 
 int main()
 {
