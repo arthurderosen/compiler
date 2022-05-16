@@ -103,7 +103,7 @@ void r_programa(){
     token = proximo_token();
     r_id();
     if(token.nome == ';'){
-      cout<<"<parser, ;"<<endl;
+      cout<<"<parser, ;>"<<endl;
       token = proximo_token();
       r_bloco();
       if(token.nome == '.'){
@@ -146,7 +146,7 @@ void r_p_decl_var(){
 
 void r_decl(){
   if (token.nome == ';') {
-    cout<<"<parser, ;"<<endl;
+    cout<<"<parser, ;>"<<endl;
     token = proximo_token();
     r_decll();
   }
@@ -231,7 +231,7 @@ void r_param_form(){
 
 void r_param_forml(){
   if (token.nome == ';'){
-    cout<<"<parser, ;"<<endl;
+    cout<<"<parser, ;>"<<endl;
     token = proximo_token();
     r_sec_param_form();
     r_param_forml();   
@@ -296,7 +296,6 @@ void r_comand_compl(){
 }
 
 void r_comand(){
-  cout<<token.nome<<endl;
   if (vector_contains(first.id, token.nome))
     r_atrib();
   else if (vector_contains(first.chama_proc, token.nome))
@@ -315,7 +314,6 @@ void r_atrib() {
   if (token.nome == ASSOP) {
     cout<<"<parser, assop>"<<endl;
     token = proximo_token();
-    cout<<token.nome<<endl;
     r_expr();
   }
   else {
@@ -408,7 +406,6 @@ void r_list_exprl() {
 }
 
 void r_expr() {
-  cout<<token.nome<<endl;
     r_expr_simp();
     r_exprl();
 
@@ -434,10 +431,6 @@ void r_expr_simp() {
     cout<<"<parser, ->"<<endl;
     token = proximo_token();   
   }
-  else{
-    print_parser("+ ou -");
-    return; 
-  }
   r_el();
 }
 
@@ -462,9 +455,8 @@ void r_ell() {
 }
 
 void r_termo() {
-  if (vector_contains(first.fator, token.nome)) {
+  if (vector_contains(first.id, token.nome)||vector_contains(first.num, token.nome)||(token.nome == '(')||(token.atributo = NOT)) {
     r_fator();
-
     token = proximo_token();
     r_termol();
   }
@@ -496,7 +488,7 @@ void r_fator() {
     else
       print_parser(")");
   }
-  else if (vector_contains(first.var, token.nome)) {
+  else if (vector_contains(first.id, token.nome)) {
     r_var();
   }
   else if (vector_contains(first.num, token.nome)) {
