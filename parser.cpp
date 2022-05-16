@@ -571,8 +571,12 @@ void build_first_sets() {
   push_back_vector(first.pdecl_subr, first.decl_proc);
   push_back_empty(first.pdecl_subr);
 
+  push_back_vector(first.decl_var, first.tipo);
+
   push_back_vector(first.decll, first.p_decl_var);
   push_back_empty(first.decll);
+
+  push_back_vector(first.p_decl_var, first.decl_var);
 
   push_back_vector(first.blocoll, first.pdecl_subr);
   push_back_empty(first.blocoll);
