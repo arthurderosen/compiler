@@ -88,7 +88,7 @@ void push_back_empty(vector<int>& dest) {
 }
 
 void print_parser(string output) {
-  cout << output << endl;
+  cout << "ERRO. Esperado token "<< output << endl;
 }
 
 //PROGRAMA E BLOCO
@@ -181,7 +181,7 @@ void r_sec_param_form(){
 void r_tipo() {
   token = proximo_token();
   if ((token.nome != INT) && (token.nome != BOOLEAN)) {
-    print_parser("ERRO. Esperado token INT ou BOOLEAN");
+    print_parser("INT ou BOOLEAN");
   }
 }
 
@@ -211,7 +211,7 @@ void r_atrib() {
     r_expr();
   }
   else {
-    print_parser("ERRO. Esperado token ASSOP");
+    print_parser("ASSOP");
   }
 }
 
@@ -284,7 +284,7 @@ void r_list_exprl() {
 void r_relacao() {
   token = proximo_token();
   if (token.nome != RELOP)
-    print_parser("ERRO. Esperado token RELOP");
+    print_parser("RELOP");
 }
 
 //NUMEROS E IDENFICADORES
@@ -305,13 +305,13 @@ void r_idl(){
 void r_digit() {
   token = proximo_token();
   if (!isdigit(token.nome))
-    print_parser("ERRO. Esperado token digito");
+    print_parser("digito");
 }
 
 void r_letra() {
   token = proximo_token();
   if (!isalphabetic(token.nome))
-    print_parser("ERRO. Esperado token letra");
+    print_parser("letra");
 }
 
 
