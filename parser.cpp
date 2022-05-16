@@ -68,7 +68,7 @@ struct First {
   vector<int> num {NUM};
   vector<int> tipo {INT, BOOLEAN};
   vector<int> relacao {RELOP};
-  vector<int> programa, bloco, blocol, blocoll, p_decl_var, decl, decll, decl_var, listaid, listaidl, pdecl_subr, decl_proc, decl_procl, param_form, param_forml, sec_param_form, comand_comp,comand_compl,comand_compll,comand,atrib,chama_proc,chama_procl,comand_cond,cond_else,comand_rep,expr,expr_simp,e,el,ell,termo,termol,fator,var,list_expr,list_exprl;
+  vector<int> programa, bloco, blocol, blocoll, p_decl_var, decl, decll, decl_var, listaid, listaidl, pdecl_subr, decl_proc, decl_procl, param_form, param_forml, sec_param_form, comand_comp,comand_compl,comand_compll,comand,atrib,chama_proc,chama_procl,comand_cond,cond_else,comand_rep,expr,expr_simp,e,el,ell,termo,termol,fator,var,list_expr,list_exprl, exprl;
 };
 
 First first;
@@ -165,7 +165,6 @@ void r_lista_idl(){
 
 void r_pdecl_subr(){
   if (vector_contains(first.decl_var, token.nome)) {
-    //token = proximo_token();
     r_decl_proc();
     if (token.nome == ';'){
       token = proximo_token();
@@ -449,10 +448,60 @@ void r_id(){
     print_parser("ID");
 }
 
+void build_first_sets() {
+  push_back_vector(first.var, first.id);
+
+  push_back_vector(first.fator, first.var);
+  push_back_vector(first.fator, first.num);
+  first.fator.push_back('(');
+  first.fator.push_back(NOT);
+
+  first.termol.push_back(MULTI);
+  first.termol.push_back(DIV);
+  first.termol.push_back(AND);
+  push_back_empty(first.termol);
+
+  push_back_vector(first.termo, first.fator);
+
+  push_back_vector(first.el, first.termo);
+  push_back_empty(first.el);
+
+  push_back_vector(first.expr_simp, first.el);
+  first.fator.push_back(PLUS);
+  first.fator.push_back(MINUS);
+
+  push_back_vector(first.exprl, first.relacao);
+  push_back_empty(first.exprl);
+
+  push_back_vector(first.expr, first.expr_simp);
+
+  push_back_vector(first.list_expr, first.expr);
+
+  push_back_vector(first.comand, first.atrib);
+  push_back_vector(first.comand, first.chama_proc);
+  push_back_vector(first.comand, first.comand_comp);
+  push_back_vector(first.comand, first.comand_cond);
+  push_back_vector(first.comand, first.comand_rep);
+
+  push_back_vector(first.sec_param_form, first.listaid);
+  push_back_vector(first.sec_param_form, first.var);
+
+  push_back_vector(first.pdecl_subr, first.decl_proc);
+  push_back_empty(first.pdecl_subr);
+
+  push_back_vector(first.decll, first.p_decl_var);
+  push_back_empty(first.decll);
+
+  push_back_vector(first.blocoll, first.pdecl_subr);
+  push_back_empty(first.blocoll);
+
+  push_back_vector(first.blocol, first.p_decl_var);
+  push_back_empty(first.blocol);
+}
 
 int main()
 {
-  //TODO: declaracao dos firsts
+  build_first_sets();
 
   token = proximo_token();
   r_programa();
