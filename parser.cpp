@@ -42,7 +42,10 @@ void r_comand_rep();
 
 //EXPRESSOES
 
+void r_list_expr();
+void r_list_exprl();
 void r_expr();
+void r_exprl();
 void r_expr_simp();
 void r_e();
 void r_el();
@@ -51,8 +54,6 @@ void r_termo();
 void r_termol();
 void r_fator();
 void r_var();
-void r_list_expr();
-void r_list_exprl();
 void r_relacao();
 
 //NUMEROS E IDENTIFICADORES
@@ -91,6 +92,8 @@ void push_back_empty(vector<int>& dest) {
 void print_parser(string output) {
   cout << "ERRO. Esperado token "<< output << endl;
 }
+
+
 
 //PROGRAMA E BLOCO
 void r_programa(){
@@ -181,13 +184,6 @@ void r_sec_param_form(){
   
 }
 
-void r_tipo() {
-  token = proximo_token();
-  if ((token.nome != INT) && (token.nome != BOOLEAN)) {
-    print_parser("INT ou BOOLEAN");
-  }
-}
-
 
 //COMANDOS
 
@@ -207,6 +203,7 @@ void r_comand(){
   
 }
 
+//TODO: rever impl
 void r_atrib() {
   r_var();
   token = proximo_token();
@@ -240,28 +237,82 @@ void r_comand_rep(){
 
 
 //EXPRESSOES
+void r_list_expr() {
+  if (vector_contains(first.expr, token.nome)) {
+    r_expr();
+
+    token = proximo_token();
+    if(vector_contains(first.list_exprl, token.nome)) {
+      r_list_exprl();
+    }
+  }
+}
+
+void r_list_exprl() {
+  if(token.nome == ',') {
+    token = proximo_token();
+    r_list_expr();
+  }
+  return;
+}
+
 void r_expr() {
-  
+  if(vector_contains(first.expr_simp, token.nome)) {
+    r_expr_simp();
+
+    token = proximo_token();
+    r_exprl();
+  }
+}
+
+void r_exprl() {
+  if(token.nome == RELOP) {
+    r_relacao();
+
+    token = proximo_token();
+    r_expr_simp();
+  }
+  return;
 }
 
 void r_expr_simp() {
-  
-}
-
-void r_e() {
-  
+  if(token.atributo == PLUS || token.atributo == MINUS) {
+    token = proximo_token();
+  }
+  r_el();
 }
 
 void r_el() {
-  
+  if (vector_contains(first.termo, token.nome)) {
+    r_termo();
+    
+    token = proximo_token();
+    r_ell();
+
+    token = proximo_token();
+    r_el();
+  }
 }
 
 void r_ell() {
+  if(token.atributo == PLUS || token.atributo == MINUS || token.atributo == OR) {
+    token = proximo_token();
+    r_termo();
+  }
   
 }
 
 void r_termo() {
-  
+  if (vector_contains(first.fator, token.nome)) {
+    r_fator();
+
+    token = proximo_token();
+    r_termol();
+  }
+  else
+    print_parser("first(FATOR)");
+
+
 }
 
 void r_termol() {
@@ -276,26 +327,25 @@ void r_var() {
   
 }
 
-void r_list_expr() {
-  
-}
-
-void r_list_exprl() {
-  
+void r_tipo() {
+  if (!vector_contains(first.tipo, token.nome)) {
+    print_parser("INT ou BOOLEAN");
+  }
 }
 
 void r_relacao() {
-  token = proximo_token();
   if (token.nome != RELOP)
     print_parser("RELOP");
 }
 
-//NUMEROS E IDENFICADORES
-
 void r_num(){
+  if (token.nome != NUM)
+    print_parser("NUM");
 }
 
 void r_id(){ 
+    if (token.nome != ID)
+    print_parser("ID");
 }
 
 
