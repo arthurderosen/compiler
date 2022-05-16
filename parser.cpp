@@ -66,7 +66,8 @@ struct First {
   vector<int> letra {'_','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z', 'A', 'B', 'C', 'D', 'E', 'F', 'G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
   vector<int> digito {0,1,2,3,4,5,6,7,8,9};
   vector<int> tipo {INT, BOOLEAN};
-  vector<int> programa, bloco, blocol, blocoll, p_decl_var, decl, decll, decl_var, listaid, listaidl, pdecl_subr, decl_proc, decl_procl, param_form, param_forml, sec_param_form, comand_comp,comand_compl,comand_compll,comand,atrib,chama_proc,chama_procl,comand_cond,cond_else,comand_rep,expr,expr_simp,e,el,ell,termo,termol,fator,var,list_expr,list_exprl,relacao,num,id,idl;
+  vector<int> relacao {RELOP};
+  vector<int> programa, bloco, blocol, blocoll, p_decl_var, decl, decll, decl_var, listaid, listaidl, pdecl_subr, decl_proc, decl_procl, param_form, param_forml, sec_param_form, comand_comp,comand_compl,comand_compll,comand,atrib,chama_proc,chama_procl,comand_cond,cond_else,comand_rep,expr,expr_simp,e,el,ell,termo,termol,fator,var,list_expr,list_exprl,num,id,idl;
 };
 
 First first;
@@ -93,18 +94,18 @@ void print_parser(string output) {
 
 //PROGRAMA E BLOCO
 void r_programa(){
-  token = proximo_token();
-  cout << token.nome;
   if (token.nome == PROGRAM ){
-    r_id();
     token = proximo_token();
+    r_id();
+
     if(token.nome == ';'){
+      token = proximo_token();
       r_bloco();
     } 
   }
 }
 
-void r_bloco(){
+void r_bloco() {
   r_blocol();
   r_comand_comp();  
 }
@@ -122,6 +123,7 @@ void r_blocoll(){
 
 void r_p_decl_var(){
   if(vector_contains(first.p_decl_var, token.nome)) {
+    token = proximo_token();
     r_decl_var();
     r_decl();
   }
@@ -129,13 +131,14 @@ void r_p_decl_var(){
 
 void r_decl(){
   if (token.nome == ';') {
+    token = proximo_token();
     r_decll();
   }
 }
 
 void r_decll() {
-  token = proximo_token();
   if (vector_contains(first.decll, token.nome)) {
+    token = proximo_token();
     r_p_decl_var();
   }
   return;
@@ -290,11 +293,22 @@ void r_relacao() {
 //NUMEROS E IDENFICADORES
 
 void r_num(){
-  
+  token = proximo_token();
+  if (vector_contains(first.num, token.nome)) {
+    r_digit();
+    r_num();
+  }
+  return;
 }
 
 void r_id(){ 
-  
+  token = proximo_token();
+  if (vector_contains(first.id, token.nome)) {
+    r_letra();
+    r_idl();
+  }
+  else
+    print_parser("first(id)");
 }
 
 void r_idl(){
@@ -317,6 +331,8 @@ void r_letra() {
 
 int main()
 {
+
+  //TODO: terminar declaracao dos firsts
   push_back_vector(first.id, first.letra);
 
   push_back_vector(first.idl, first.letra);
@@ -325,12 +341,8 @@ int main()
 
   push_back_vector(first.num, first.digito);
   push_back_empty(first.num);
+  //
 
-  //return 1;  
-  //r_programa();
-  while (token.nome != EOF) {
-      token = proximo_token();
-      if (token.nome == '.' )
-        return 0;
-  }
+  token = proximo_token();
+  r_programa();
 }
