@@ -15,7 +15,7 @@ int partida = 0;
 int cont_simb_lido = 0;
 vector<string> tabela_simb;
 
-ifstream file("teste2.txt");
+ifstream file("teste.txt");
 string code((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
 
 bool isspecialsymbol(char c)
@@ -41,9 +41,9 @@ bool isresto(char c) {
 }
 
 void print_lexer(string output) {
-    //Comentado para nao printar no parser
+    //Comentar para nao printar no parser
     
-    cout<<output;
+    //cout<<output;
 }
 
 
@@ -1119,7 +1119,7 @@ Token proximo_token()
             break;
 
         case 404:
-            print_lexer("Erro de compilacao");
+            print_lexer("Erro de compilacao\n");
             token.nome = EOF;
             token.atributo = -1;
             return (token);

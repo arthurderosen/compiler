@@ -415,7 +415,6 @@ void r_exprl() {
   if(token.nome == RELOP) {
     cout<<"<parser, relop>"<<endl;
     r_relacao();
-
     token = proximo_token();
     r_expr_simp();
   }
