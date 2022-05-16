@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
+#include <string>
+#include <algorithm> 
 #include "lexer.h"
 
 using namespace std;
@@ -12,9 +14,9 @@ void r_blocol();
 void r_blocoll();
 
 //DECLARAÇÕES
-void r_pdecl_var();
+void r_p_decl_var();
 void r_decl();
-void r_decl_l();
+void r_decll();
 void r_decl_var();
 void r_listaid();
 void r_listaidl();
@@ -64,7 +66,7 @@ struct First {
   vector<int> letra {'_','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z', 'A', 'B', 'C', 'D', 'E', 'F', 'G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
   vector<int> digito {0,1,2,3,4,5,6,7,8,9};
   vector<int> tipo {INT, BOOLEAN};
-  vector<int> programa, bloco, blocol, blocoll, pdecl_var, decl, decl_l, decl_var, listaid, listaidl, pdecl_subr, decl_proc, decl_procl, param_form, param_forml, sec_param_form, comand_comp,comand_compl,comand_compll,comand,atrib,chama_proc,chama_procl,comand_cond,cond_else,comand_rep,expr,expr_simp,e,el,ell,termo,termol,fator,var,list_expr,list_exprl,relacao,num,id,idl;
+  vector<int> programa, bloco, blocol, blocoll, p_decl_var, decl, decll, decl_var, listaid, listaidl, pdecl_subr, decl_proc, decl_procl, param_form, param_forml, sec_param_form, comand_comp,comand_compl,comand_compll,comand,atrib,chama_proc,chama_procl,comand_cond,cond_else,comand_rep,expr,expr_simp,e,el,ell,termo,termol,fator,var,list_expr,list_exprl,relacao,num,id,idl;
 };
 
 First first;
@@ -72,6 +74,22 @@ Token token;
 
 const int empty_str = 0;
 
+//HELPERS
+bool vector_contains(vector<int>& vector, int value) {
+  return find(vector.begin(), vector.end(), value) != vector.end(); 
+}
+
+void push_back_vector(vector<int>& dest, vector<int>& source) {
+  for(int i: source) dest.push_back(i);
+}
+
+void push_back_empty(vector<int>& dest) {
+  dest.push_back(empty_str);
+}
+
+void print_parser(string output) {
+  cout << output << endl;
+}
 
 //PROGRAMA E BLOCO
 void r_programa(){
@@ -92,7 +110,7 @@ void r_bloco(){
 }
 
 void r_blocol(){
-  r_pdecl_var();
+  r_p_decl_var();
   r_blocoll();
 }
 
@@ -102,20 +120,26 @@ void r_blocoll(){
 
 //DECLARACOES
 
-void r_pdecl_var(){
-  r_decl_var();
-  r_decl();
+void r_p_decl_var(){
+  if(vector_contains(first.p_decl_var, token.nome)) {
+    r_decl_var();
+    r_decl();
+  }
 }
 
 void r_decl(){
   if (token.nome == ';') {
-
+    r_decll();
   }
 }
 
-void r_decl_l() {
-
- }
+void r_decll() {
+  token = proximo_token();
+  if (vector_contains(first.decll, token.nome)) {
+    r_p_decl_var();
+  }
+  return;
+}
 
 
 void r_decl_var(){
@@ -157,7 +181,7 @@ void r_sec_param_form(){
 void r_tipo() {
   token = proximo_token();
   if ((token.nome != INT) && (token.nome != BOOLEAN)) {
-    cout<<"ERRO. Esperado token INT ou BOOLEAN";
+    print_parser("ERRO. Esperado token INT ou BOOLEAN");
   }
 }
 
@@ -187,7 +211,7 @@ void r_atrib() {
     r_expr();
   }
   else {
-    cout<<"ERRO. Esperado token ASSOP";
+    print_parser("ERRO. Esperado token ASSOP");
   }
 }
 
@@ -260,7 +284,7 @@ void r_list_exprl() {
 void r_relacao() {
   token = proximo_token();
   if (token.nome != RELOP)
-    cout<<"ERRO. Esperado token RELOP";
+    print_parser("ERRO. Esperado token RELOP");
 }
 
 //NUMEROS E IDENFICADORES
@@ -281,26 +305,15 @@ void r_idl(){
 void r_digit() {
   token = proximo_token();
   if (!isdigit(token.nome))
-    cout<<"ERRO. Esperado token digito";
+    print_parser("ERRO. Esperado token digito");
 }
 
 void r_letra() {
   token = proximo_token();
   if (!isalphabetic(token.nome))
-    cout<<"ERRO. Esperado token letra";
+    print_parser("ERRO. Esperado token letra");
 }
 
-
-
-
-
-void push_back_vector(vector<int>& dest, vector<int>& source) {
-  for(int i: source) dest.push_back(i);
-}
-
-void push_back_empty(vector<int>& dest) {
-  dest.push_back(empty_str);
-}
 
 int main()
 {
