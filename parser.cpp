@@ -68,7 +68,7 @@ struct First {
   vector<int> num {NUM};
   vector<int> tipo {INT, BOOLEAN};
   vector<int> relacao {RELOP};
-  vector<int> programa, bloco, blocol, blocoll, p_decl_var, decl, decll, decl_var, listaid, listaidl, pdecl_subr, decl_proc, decl_procl, param_form, param_forml, sec_param_form, comand_comp,comand_compl,comand_compll,comand,atrib,chama_proc,chama_procl,comand_cond,cond_else,comand_rep,expr,expr_simp,e,el,ell,termo,termol,fator,var,list_expr,list_exprl,num,id;
+  vector<int> programa, bloco, blocol, blocoll, p_decl_var, decl, decll, decl_var, listaid, listaidl, pdecl_subr, decl_proc, decl_procl, param_form, param_forml, sec_param_form, comand_comp,comand_compl,comand_compll,comand,atrib,chama_proc,chama_procl,comand_cond,cond_else,comand_rep,expr,expr_simp,e,el,ell,termo,termol,fator,var,list_expr,list_exprl;
 };
 
 First first;
@@ -310,21 +310,46 @@ void r_termo() {
     r_termol();
   }
   else
-    print_parser("first(FATOR)");
-
-
+    print_parser("first(TERMO)");
 }
 
 void r_termol() {
-  
+  if(token.atributo == MULTI || token.atributo == DIV || token.atributo == AND) {
+    token = proximo_token();
+    r_termo();
+  }
 }
 
 void r_fator() {
-  
+  if (token.atributo == NOT) {
+    token = proximo_token();
+    r_fator();
+  }
+  else if (token.nome == '(') {
+    token = proximo_token();
+    r_expr();
+
+    if(token.nome == ')')
+      return;
+    else
+      print_parser(")");
+  }
+  else if (vector_contains(first.var, token.nome)) {
+    r_var();
+  }
+  else if (vector_contains(first.num, token.nome)) {
+    r_num();
+  }
+  else print_parser("first(FATOR)");
 }
 
 void r_var() {
-  
+  if (token.nome == ID) {
+    token = proximo_token();
+    r_expr();
+  }
+  else
+    print_parser("ID");
 }
 
 void r_tipo() {
@@ -351,9 +376,7 @@ void r_id(){
 
 int main()
 {
-
-  //TODO: terminar declaracao dos firsts
-  //
+  //TODO: declaracao dos firsts
 
   token = proximo_token();
   r_programa();
